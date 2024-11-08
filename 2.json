@@ -1,21 +1,20 @@
 {
-    "name": "Bon de Réduction 50% - Concert",
-    "description": "Ce bon de réduction de 50% est valable pour l'achat d'un billet pour le concert. Valable jusqu'à la date d'expiration spécifiée.",
-    "image": "https://nerd658.github.io/nft-metadata/2.png",
-    "attributes": [
-      {
-        "trait_type": "Réduction",
-        "value": "50%"
-      },
-      {
-        "trait_type": "Validité",
-        "value": "Utilisable une seule fois"
-      },
-      {
-        "trait_type": "Expiration",
-        "display_type": "date",
-        "value": 1701215999
-      }
-    ]
-  }
-  
+  "name": "Bon de Réduction 50%",
+  "description": "Ce bon de réduction de 50% est valable pour l'achat d'un billet pour le concert. Valable jusqu'à la date d'expiration spécifiée.",
+  "image": "https://nerd658.github.io/nft-metadata/images/2.png",
+  "attributes": [
+    {
+      "trait_type": "Réduction",
+      "value": "50%"
+    },
+    {
+      "trait_type": "Validité",
+      "value": "Utilisable une seule fois"
+    },
+    {
+      "trait_type": "Expiration",
+      "display_type": "date",
+      "value": 1701215999
+    }
+  ]
+}
