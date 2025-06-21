@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - CertifyMagic</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1476f3',
+                        'light-bg': '#F9FAFB',
+                        'dark-text': '#1F2937',
+                        'light-text': '#6B7280',
+                    },
+                    fontFamily: {
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(20, 118, 243, 0.08);
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .sidebar-overlay {
+                transition: opacity 0.3s ease-in-out;
+            }
+            .sidebar-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light-bg">
+
+    <div class="flex h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 md:relative md:translate-x-0">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="h-16 flex items-center justify-center border-b px-4">
+                     <a href="#" class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-primary-blue" style="letter-spacing: 0.05em;">CertifyMagic</span>
+                    </a>
+                </div>
+                <!-- Nav Links -->
+                <nav class="flex-grow p-4 space-y-2">
+                    <a href="#" class="flex items-center p-3 text-white bg-primary-blue rounded-lg shadow-sm">
+                        <i class="fas fa-tachometer-alt fa-fw mr-3"></i>
+                        <span class="font-semibold">Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-folder fa-fw mr-3"></i>
+                        <span>Mes certificats</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-pencil-alt fa-fw mr-3"></i>
+                        <span>Créer un certificat</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-cog fa-fw mr-3"></i>
+                        <span>Paramètres</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-question-circle fa-fw mr-3"></i>
+                        <span>Aide / Support</span>
+                    </a>
+                </nav>
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="#" class="flex items-center p-3 text-red-500 hover:bg-red-50 rounded-lg">
+                        <i class="fas fa-sign-out-alt fa-fw mr-3"></i>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay for Mobile -->
+        <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black opacity-0 z-40 md:hidden pointer-events-none"></div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Top Header -->
+            <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-30 shadow-sm">
+                <div class="h-16 flex items-center justify-between px-4 md:px-8">
+                    <!-- Mobile Burger Menu -->
+                    <button id="burger-btn" class="md:hidden text-dark-text">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <!-- Search bar -->
+                    <div class="hidden md:block relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-light-text"></i>
+                        <input type="text" placeholder="Rechercher..." class="w-64 pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                    </div>
+                    <!-- Right side icons -->
+                    <div class="flex items-center space-x-5">
+                        <button class="text-light-text hover:text-dark-text">
+                            <i class="fas fa-bell text-xl"></i>
+                        </button>
+                        <!-- Profile Dropdown -->
+                        <div class="relative">
+                            <button id="profile-btn" class="flex items-center space-x-2">
+                                <span class="hidden sm:inline font-semibold text-dark-text">Jean D.</span>
+                                <img src="https://placehold.co/40x40/1476f3/FFFFFF?text=JD" alt="Avatar de l'utilisateur" class="w-9 h-9 rounded-full">
+                            </button>
+                            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50">
+                                <a href="#" class="block px-4 py-2 text-sm text-dark-text hover:bg-gray-100">Mon profil</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-dark-text hover:bg-gray-100">Paramètres</a>
+                                <div class="border-t my-1"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-500 hover:bg-red-50">Déconnexion</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="p-4 md:p-8">
+                <!-- Welcome Section -->
+                <section class="mb-10">
+                    <h1 class="text-3xl md:text-4xl font-bold text-dark-text">Bienvenue, Jean !</h1>
+                    <p class="mt-2 text-lg text-light-text">Gérez vos certificats numériques en toute simplicité.</p>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="mb-10">
+                    <h2 class="text-xl font-semibold text-dark-text mb-4">Actions rapides</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Generate Certificate Card -->
+                        <a href="#" class="action-card bg-white p-6 rounded-xl shadow-md transition-all duration-300 flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-primary-blue rounded-lg flex items-center justify-center">
+                                <i class="fas fa-plus text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-dark-text">Générer un certificat</h3>
+                                <p class="text-sm text-light-text">Créez une nouvelle attestation.</p>
+                            </div>
+                        </a>
+                        <!-- View Certificates Card -->
+                        <a href="#" class="action-card bg-white p-6 rounded-xl shadow-md transition-all duration-300 flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-primary-blue/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-folder-open text-primary-blue text-2xl"></i>
+                            </div>
+                             <div>
+                                <h3 class="font-bold text-lg text-dark-text">Consulter mes certificats</h3>
+                                <p class="text-sm text-light-text">Voir vos attestations reçues.</p>
+                            </div>
+                        </a>
+                        <!-- Share Certificate Card -->
+                        <a href="#" class="action-card bg-white p-6 rounded-xl shadow-md transition-all duration-300 flex items-center space-x-4">
+                           <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-share-alt text-gray-600 text-2xl"></i>
+                            </div>
+                             <div>
+                                <h3 class="font-bold text-lg text-dark-text">Partager un certificat</h3>
+                                <p class="text-sm text-light-text">Valorisez une de vos réussites.</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- Recent Activity / Stats -->
+                <section>
+                    <h2 class="text-xl font-semibold text-dark-text mb-4">Activité récente</h2>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <ul class="space-y-4">
+                            <li class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-download text-green-500 mr-4"></i>
+                                    <p>Vous avez reçu le certificat <span class="font-semibold">"Participation Hackathon 2024"</span>.</p>
+                                </div>
+                                <span class="text-sm text-light-text">Hier</span>
+                            </li>
+                             <li class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-upload text-blue-500 mr-4"></i>
+                                    <p>Vous avez émis le certificat <span class="font-semibold">"Stage de fin d'études"</span>.</p>
+                                </div>
+                                <span class="text-sm text-light-text">Il y a 3 jours</span>
+                            </li>
+                             <li class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fab fa-linkedin text-blue-700 mr-4"></i>
+                                    <p>Vous avez partagé <span class="font-semibold">"Vainqueur Concours d'Éloquence"</span>.</p>
+                                </div>
+                                <span class="text-sm text-light-text">La semaine dernière</span>
+                            </li>
+                        </ul>
+                        <div class="text-center mt-6">
+                            <a href="#" class="text-sm font-semibold text-primary-blue hover:underline">Voir toute l'activité</a>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const burgerBtn = document.getElementById('burger-btn');
+
+            const profileBtn = document.getElementById('profile-btn');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            // Mobile sidebar toggle
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+            
+            if (burgerBtn) {
+                burgerBtn.addEventListener('click', toggleSidebar);
+            }
+            if (overlay) {
+                overlay.addEventListener('click', toggleSidebar);
+            }
+
+            // Profile dropdown toggle
+            if (profileBtn) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent the click from bubbling up to the window
+                    profileDropdown.classList.toggle('hidden');
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            window.addEventListener('click', (e) => {
+                if (profileDropdown && !profileDropdown.classList.contains('hidden') && !profileBtn.contains(e.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Certificats Reçus - CertifyMagic</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1476f3',
+                        'light-bg': '#F8FAFC',
+                        'dark-text': '#1F2937',
+                        'light-text': '#6B7280',
+                    },
+                    fontFamily: {
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .certificate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(20, 118, 243, 0.07);
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .sidebar-overlay {
+                transition: opacity 0.3s ease-in-out;
+            }
+            .sidebar-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light-bg">
+
+    <div class="flex h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 md:relative md:translate-x-0">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="h-16 flex items-center justify-center border-b px-4">
+                     <a href="#" class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-primary-blue tracking-wider">CertifyMagic</span>
+                    </a>
+                </div>
+                <!-- Nav Links -->
+                <nav class="flex-grow p-4 space-y-2">
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-home fa-fw mr-3"></i>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-white bg-primary-blue rounded-lg shadow-sm">
+                        <i class="fas fa-file-alt fa-fw mr-3"></i>
+                        <span class="font-semibold">Mes certificats reçus</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-paper-plane fa-fw mr-3"></i>
+                        <span>Mes certificats envoyés</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-pencil-alt fa-fw mr-3"></i>
+                        <span>Générer un certificat</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-cog fa-fw mr-3"></i>
+                        <span>Paramètres</span>
+                    </a>
+                     <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-question-circle fa-fw mr-3"></i>
+                        <span>Aide</span>
+                    </a>
+                </nav>
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="#" class="flex items-center p-3 text-red-500 hover:bg-red-50 rounded-lg">
+                        <i class="fas fa-sign-out-alt fa-fw mr-3"></i>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay for Mobile -->
+        <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black opacity-0 z-40 md:hidden pointer-events-none"></div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Top Header -->
+            <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-30 shadow-sm">
+                <div class="h-16 flex items-center justify-between px-4 md:px-8">
+                    <!-- Mobile Burger Menu -->
+                    <button id="burger-btn" class="md:hidden text-dark-text">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <!-- Title for current page on mobile -->
+                    <h1 class="md:hidden text-lg font-semibold text-dark-text">Mes Certificats</h1>
+                    <!-- Right side icons -->
+                    <div class="flex items-center space-x-5 ml-auto">
+                        <button class="text-light-text hover:text-dark-text">
+                            <i class="fas fa-bell text-xl"></i>
+                        </button>
+                        <!-- Profile Dropdown -->
+                        <div class="relative">
+                            <button id="profile-btn" class="flex items-center space-x-2">
+                                <span class="hidden sm:inline font-semibold text-dark-text">Jean D.</span>
+                                <img src="https://placehold.co/40x40/1476f3/FFFFFF?text=JD" alt="Avatar de l'utilisateur" class="w-9 h-9 rounded-full">
+                            </button>
+                            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50">
+                                <a href="#" class="block px-4 py-2 text-sm text-dark-text hover:bg-gray-100">Mon profil</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-dark-text hover:bg-gray-100">Paramètres</a>
+                                <div class="border-t my-1"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-500 hover:bg-red-50">Déconnexion</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="p-4 md:p-8">
+                <!-- Page Header -->
+                <header class="mb-8">
+                    <h1 class="text-3xl md:text-4xl font-bold text-dark-text">Mes certificats reçus</h1>
+                    <p class="mt-2 text-md text-light-text">Tous les certificats que vous avez obtenus via CertifyMagic s’affichent ici.</p>
+                </header>
+
+                <!-- Search and Filter Bar -->
+                <div class="bg-white p-4 rounded-xl shadow-sm mb-8 flex flex-col md:flex-row items-center gap-4">
+                    <div class="relative w-full md:flex-grow">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Rechercher un certificat..." class="w-full pl-12 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                    </div>
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <select class="w-full md:w-auto border border-gray-200 rounded-lg py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                            <option>Trier par : Date</option>
+                            <option>Trier par : Nom</option>
+                            <option>Trier par : Émetteur</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Certificates Grid -->
+                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Certificate Card 1 -->
+                    <article class="certificate-card bg-white rounded-xl shadow-md transition-all duration-300 flex flex-col overflow-hidden">
+                        <div class="p-5 flex-grow">
+                             <div class="flex-shrink-0 w-16 h-16 bg-primary-blue/10 rounded-lg flex items-center justify-center mb-4">
+                                <i class="fas fa-award text-primary-blue text-3xl"></i>
+                            </div>
+                            <h2 class="font-bold text-dark-text leading-tight">Participation Hackathon 2024</h2>
+                            <p class="text-sm text-light-text mt-2">Par : <span class="font-semibold">Orange Burkina</span></p>
+                            <p class="text-xs text-light-text mt-1">12 juin 2025</p>
+                            <p class="text-xs text-green-600 font-medium mt-3"><i class="fas fa-shield-alt fa-fw"></i> Certificat vérifié</p>
+                        </div>
+                        <div class="bg-gray-50 border-t p-3 flex justify-end items-center gap-3">
+                            <button class="text-gray-500 hover:text-primary-blue" title="Voir"><i class="fas fa-eye"></i></button>
+                            <button class="text-gray-500 hover:text-primary-blue" title="Partager"><i class="fas fa-share-alt"></i></button>
+                            <button class="text-gray-500 hover:text-primary-blue" title="Télécharger"><i class="fas fa-download"></i></button>
+                        </div>
+                    </article>
+
+                     <!-- Certificate Card 2 -->
+                    <article class="certificate-card bg-white rounded-xl shadow-md transition-all duration-300 flex flex-col overflow-hidden">
+                        <div class="p-5 flex-grow">
+                             <div class="flex-shrink-0 w-16 h-16 bg-primary-blue rounded-lg flex items-center justify-center mb-4">
+                                <i class="fas fa-trophy text-white text-3xl"></i>
+                            </div>
+                            <h2 class="font-bold text-dark-text leading-tight">Vainqueur du Concours d'Éloquence</h2>
+                            <p class="text-sm text-light-text mt-2">Par : <span class="font-semibold">Université Joseph Ki-Zerbo</span></p>
+                            <p class="text-xs text-light-text mt-1">21 juin 2025</p>
+                            <p class="text-xs text-green-600 font-medium mt-3"><i class="fas fa-shield-alt fa-fw"></i> Certificat vérifié</p>
+                        </div>
+                        <div class="bg-gray-50 border-t p-3 flex justify-end items-center gap-3">
+                            <button class="text-gray-500 hover:text-primary-blue" title="Voir"><i class="fas fa-eye"></i></button>
+                            <button class="text-gray-500 hover:text-primary-blue" title="Partager"><i class="fas fa-share-alt"></i></button>
+                            <button class="text-gray-500 hover:text-primary-blue" title="Télécharger"><i class="fas fa-download"></i></button>
+                        </div>
+                    </article>
+
+                    <!-- Add more cards as needed -->
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const burgerBtn = document.getElementById('burger-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+            
+            if (burgerBtn) {
+                burgerBtn.addEventListener('click', toggleSidebar);
+            }
+            if (overlay) {
+                overlay.addEventListener('click', toggleSidebar);
+            }
+
+            // Profile dropdown toggle
+            if (profileBtn) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent the click from bubbling up to the window
+                    profileDropdown.classList.toggle('hidden');
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            window.addEventListener('click', (e) => {
+                if (profileDropdown && !profileDropdown.classList.contains('hidden') && !profileBtn.contains(e.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
