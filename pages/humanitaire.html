@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Humanitaire - SCOOPS-FAB</title>
+    <meta name="description" content="Soutien humanitaire aux déplacés internes et communautés vulnérables au Burkina Faso. Kits alimentaires, dignité et abris.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --primary-green: #2E7D32;
+            --light-green: #4CAF50;
+            --accent-yellow: #FFC107;
+            --warm-orange: #FF7043; /* Nouvelle couleur pour l'urgence/humanitaire */
+            --dark-text: #1A1A1A;
+            --light-text: #555;
+            --off-white: #F9F9F9;
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.1);
+            --radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            background-color: var(--off-white);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- 2. ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        @keyframes fadeInHeader {
+            from { opacity: 0; transform: scale(1.05); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- 3. HEADER & NAV --- */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        nav { display: flex; justify-content: space-between; align-items: center; }
+
+        .logo { display: flex; align-items: center; font-weight: 700; color: var(--primary-green); font-size: 1.2rem; gap: 10px; }
+        .logo img { height: 50px; width: auto; }
+
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--dark-text); position: relative; padding: 5px 0; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-green); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-yellow); }
+
+        .hamburger { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary-green); }
+
+        /* --- 4. HERO SECTION IMMERSIF --- */
+        .hero-humanitaire {
+            height: 60vh;
+            min-height: 400px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://edm.ch/wp-content/uploads/2023/12/Enfants_du_Monde_banner_PARMI-Nord_burkina_faso.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin-bottom: 80px;
+            overflow: hidden;
+        }
+
+        .hero-humanitaire::before {
+            content: ''; position: absolute; inset: 0; background: inherit; z-index: -1; animation: fadeInHeader 2s ease-out;
+        }
+
+        .hero-content { z-index: 1; max-width: 800px; padding: 0 20px; }
+
+        .hero-content h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            animation: fadeInHeader 1s ease-out 0.3s backwards;
+        }
+
+        .hero-content p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeInHeader 1s ease-out 0.6s backwards;
+        }
+
+        /* --- 5. KITS HUMANITAIRES (CARDS DESIGN) --- */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--primary-green);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--light-text);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .grid-kits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding-bottom: 80px;
+        }
+
+        .kit-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .kit-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .kit-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .kit-card:hover .kit-image img { transform: scale(1.1); }
+
+        .kit-content {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kit-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--off-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--warm-orange);
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .kit-card:hover .kit-icon { background: var(--warm-orange); color: white; }
+
+        .kit-content h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            color: var(--dark-text);
+            margin-bottom: 15px;
+        }
+
+        .kit-content p {
+            font-size: 0.95rem;
+            color: var(--light-text);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .kit-tag {
+            margin-top: auto;
+            align-self: flex-start;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary-green);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* --- 6. ABRIS D'URGENCE (FEATURE SECTION) --- */
+        .abris-section {
+            background-color: var(--white);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .abris-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .abris-content { flex: 1; }
+        
+        .abris-content h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--primary-green);
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .abris-content p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            margin-bottom: 30px;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .features-list li i {
+            color: var(--accent-yellow);
+            font-weight: bold;
+            background: var(--primary-green);
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; color: white;
+        }
+
+        /* Style Galerie/Carousel Modernisé */
+        .abris-gallery {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            position: relative;
+        }
+
+        .abris-gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s;
+        }
+
+        .abris-gallery img:nth-child(1) { transform: translateY(30px); }
+        .abris-gallery img:nth-child(2) { transform: translateY(-20px); }
+        .abris-gallery img:nth-child(3) { transform: translateY(10px); }
+        .abris-gallery img:nth-child(4) { transform: translateY(-40px); }
+
+        .abris-gallery:hover img { transform: translateY(0) scale(1.02); z-index: 2; }
+
+        /* --- 7. STATS / IMPACT BANNER --- */
+        .impact-banner {
+            background: var(--primary-green);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .impact-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .impact-item h3 { font-size: 3rem; font-family: 'Playfair Display', serif; margin-bottom: 10px; color: var(--accent-yellow); }
+        .impact-item p { font-size: 1.1rem; opacity: 0.9; }
+
+        /* --- FOOTER --- */
+        footer { background-color: #263238; color: #cfd8dc; padding: 80px 0 30px; margin-top: 0; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; margin-bottom: 50px; }
+        .footer-section h4 { color: var(--white); font-size: 1.3rem; margin-bottom: 25px; border-bottom: 2px solid var(--accent-yellow); display: inline-block; padding-bottom: 8px; font-family: 'Inter', sans-serif; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { transition: 0.3s; display: inline-block; }
+        .footer-links a:hover { color: var(--accent-yellow); transform: translateX(5px); }
+        .copyright { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; font-size: 0.9rem; opacity: 0.7; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .abris-container { flex-direction: column; }
+            .abris-gallery { grid-template-columns: 1fr; width: 100%; }
+            .abris-gallery img { transform: none !important; height: 250px; width: 100%; }
+            
+            .nav-links { 
+                display: none; 
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .hamburger { display: block; }
+            .hero-humanitaire { height: 50vh; min-height: 350px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../index.html" class="logo">
+                    <img src="../images/logo/logo.png" alt="Logo" onerror="this.style.display='none'">
+                    SCOOPS-FAB
+                </a>
+                <div class="hamburger" onclick="toggleMenu()">☰</div>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="cooperative.html" class="active">La Coopérative</a></li>
+                    <li><a href="produits.html">Nos Vivres & Produits</a></li>
+                    <li><a href="materiel.html">Matériel</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="humanitaire.html">Humanitaire</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero-humanitaire">
+            <div class="hero-content">
+                <h1>Restaurer la Dignité</h1>
+                <p>Au-delà de l'agriculture, nous portons secours. Un engagement solidaire envers les déplacés internes et les communautés fragiles du Burkina Faso.</p>
+            </div>
+        </section>
+
+        <!-- KITS HUMANITAIRES GRID -->
+        <section class="container">
+            <div class="section-title reveal">
+                <h2>Nos Kits de Soutien</h2>
+                <p>Des solutions complètes conçues pour répondre aux besoins immédiats de survie et d'hygiène.</p>
+            </div>
+
+            <div class="grid-kits">
+                <!-- Kit 1 -->
+                <div class="kit-card reveal">
+                    <div class="kit-image">
+                        <img src="../images/humanitaires/kit_alimentaire.jpg" alt="Kit Alimentaire" onerror="this.src='https://via.placeholder.com/400x300?text=Kit+Alimentaire'">
+                    </div>
+                    <div class="kit-content">
+                        <div class="kit-icon">🍚</div>
+                        <h3>Kit Alimentaire</h3>
+                        <p>Une réponse nutritionnelle d'urgence : riz, maïs, huile, sel et légumineuses. Conçu pour soutenir une famille pendant un mois.</p>
+                        <span class="kit-tag">Urgence Vitale</span>
+                    </div>
+                </div>
+
+                <!-- Kit 2 -->
+                <div class="kit-card reveal">
+                    <div class="kit-image">
+                        <img src="https://mcc.org/sites/default/files/2023-08/RS129873_MCC20230715_dignity_kit_photos_bb-lpr.jpg" alt="Kit Dignité" onerror="this.src='https://via.placeholder.com/400x300?text=Kit+Dignité'">
+                    </div>
+                    <div class="kit-content">
+                        <div class="kit-icon">🧴</div>
+                        <h3>Kit Dignité</h3>
+                        <p>Préserver l'intimité et l'hygiène des femmes et jeunes filles. Savon, serviettes hygiéniques, seaux et linge essentiel.</p>
+                        <span class="kit-tag">Hygiène & Santé</span>
+                    </div>
+                </div>
+
+                <!-- Kit 3 -->
+                <div class="kit-card reveal">
+                    <div class="kit-image">
+                        <img src="../images/humanitaires/kit_scolaire.jpg" alt="Kit Scolaire" onerror="this.src='https://via.placeholder.com/400x300?text=Kit+Scolaire'">
+                    </div>
+                    <div class="kit-content">
+                        <div class="kit-icon">🎒</div>
+                        <h3>Kit Scolaire</h3>
+                        <p>Parce que l'éducation ne doit pas s'arrêter. Sacs, cahiers, stylos et matériel géométrique pour les enfants déplacés.</p>
+                        <span class="kit-tag">Éducation</span>
+                    </div>
+                </div>
+
+                <!-- Kit 4 -->
+                <div class="kit-card reveal">
+                    <div class="kit-image">
+                        <img src="../images/humanitaires/kit_managere.jpg" alt="Kit Ménagère" onerror="this.src='https://via.placeholder.com/400x300?text=Kit+Ménagère'">
+                    </div>
+                    <div class="kit-content">
+                        <div class="kit-icon">🍳</div>
+                        <h3>Kit Ménagère</h3>
+                        <p>Le nécessaire pour cuisiner et vivre dignement : marmites, louches, nattes, bidons et ustensiles de base.</p>
+                        <span class="kit-tag">Vie Quotidienne</span>
+                    </div>
+                </div>
+
+                <!-- Kit 5 (Nouveau) -->
+                <div class="kit-card reveal">
+                    <div class="kit-image">
+                        <img src="https://agridigitale.com/storage/uploads/SEMENCE%20CERTIFIEE%20TOGO.jpg" alt="Kit Semences" onerror="this.src='https://via.placeholder.com/400x300?text=Kit+Semences'">
+                    </div>
+                    <div class="kit-content">
+                        <div class="kit-icon">🌱</div>
+                        <h3>Kit Semences & Culture</h3>
+                        <p>Pour l'autonomie alimentaire : semences à cycle court (niébé, gombo), arrosoir et petit outillage pour cultiver un potager.</p>
+                        <span class="kit-tag">Autonomie</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABRIS D'URGENCE SECTION -->
+        <section class="abris-section reveal">
+            <div class="container">
+                <div class="abris-container">
+                    <div class="abris-content">
+                        <span style="color: var(--warm-orange); font-weight: 700; letter-spacing: 1px; display: block; margin-bottom: 10px;">REFUGE & PROTECTION</span>
+                        <h2>Abris d'Urgence RHU</h2>
+                        <p>Face aux intempéries et à l'insécurité, un toit est la première étape vers la reconstruction. Nous déployons des tentes familiales robustes et modulables.</p>
+                        <ul class="features-list">
+                            <li><i>✓</i> Installation rapide sur tout terrain.</li>
+                            <li><i>✓</i> Protection contre pluie, vent et soleil.</li>
+                            <li><i>✓</i> Espace de vie sécurisé pour les familles.</li>
+                            <li><i>✓</i> Matériaux durables et réutilisables.</li>
+                        </ul>
+                        <a href="contact.html" style="display: inline-block; background: var(--primary-green); color: white; padding: 12px 30px; border-radius: 30px; margin-top: 20px; font-weight: 600;">Demander une intervention</a>
+                    </div>
+                    
+                    <!-- Galerie Grid au lieu du carrousel -->
+                    <div class="abris-gallery">
+                        <img src="../images/humanitaires/tente_vu_de_loin.jpeg" alt="Camp de tentes" onerror="this.src='https://via.placeholder.com/300x250?text=Camp'">
+                        <img src="../images/humanitaires/interieur_tente.jpeg" alt="Intérieur" onerror="this.src='https://via.placeholder.com/300x250?text=Intérieur'">
+                        <img src="../images/humanitaires/tente1.jpeg" alt="Montage" onerror="this.src='https://via.placeholder.com/300x250?text=Montage'">
+                        <img src="../images/humanitaires/tente_vue_de_pres.jpeg" alt="Détail" onerror="this.src='https://via.placeholder.com/300x250?text=Structure'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-content reveal">
+                <div class="footer-section">
+                    <h4>SCOOPS-FAB</h4>
+                    <p style="opacity: 0.8; line-height: 1.6;">Société Coopérative Simplifiée des Femmes Agricultrices du Burkina. Unis pour la terre et l'humain.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Accueil</a></li>
+                        <li><a href="cooperative.html">La Coopérative</a></li>
+                        <li><a href="produits.html">Produits</a></li>
+                        <li><a href="humanitaire.html">Humanitaire</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Nous Contacter</h4>
+                    <ul class="footer-links">
+                        <li>📍 Ouagadougou, Burkina Faso</li>
+                        <li>📧 scoopsfab01@gmail.com</li>
+                        <li>📞 +226 70 20 44 54</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 SCOOPS-FAB. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile Toggle
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            const isFlex = nav.style.display === 'flex';
+            nav.style.display = isFlex ? 'none' : 'flex';
+        }
+
+        // Animation au Scroll (Reveal)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
